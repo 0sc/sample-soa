@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth
+  labels:
+    app: auth
+spec:
+  type: NodePort
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: auth-svc
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: auth-svc
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: auth-svc
+        language: go
+    spec:
+      containers:
+      - name: auth-svc
+        image: xovox/sample-auth:0.1
+        ports:
+        - containerPort: 443
+        - containerPort: 8080
+        env:
+          - name: DATABASE_URL
+            value: "root:abc123@tcp(db:3306)/USRINFO"
+          - name: BOOK_SVC_ADDR
+            value: "book-svc:50050"
+          - name: BOOK_PRICE_SVC_ADDR
+            value: "book-price-svc:50050"
+          - name: PORT
+            value: ":8080"

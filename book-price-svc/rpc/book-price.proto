@@ -1,0 +1,10 @@
+syntax = "proto3";
+package rpc;
+
+message Payload {
+  string value = 1;
+}
+
+service bookPriceSvc {
+  rpc GetPrice (Payload) returns (Payload) {}
+}

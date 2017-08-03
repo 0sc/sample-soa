@@ -1,0 +1,19 @@
+syntax = "proto3";
+package rpc;
+
+message Empty {}
+
+message Book {
+  string title = 1;
+  string author = 2;
+  string isbn = 3;
+  string description = 4;
+}
+
+message Books {
+  repeated Book books = 1;
+}
+
+service bookSvc {
+  rpc GetBooks(Empty) returns (Books) {}
+}
